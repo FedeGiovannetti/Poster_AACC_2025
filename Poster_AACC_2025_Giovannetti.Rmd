@@ -30,17 +30,22 @@ main_findings:
   - "Implementación de métodos de **clusterización** para la identificación de **diversidad cognitiva** en dos muestras de **niños y niñas** provenientes del Área Metropolitana de Buenos Aires."
 main_fontfamily: 'Montserrat'
 logoleft_name: "Logos_UNA_CEMIC.png"
+
+logoright_name: "QR_Poster_AACC_2025.png"
 # logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
 # logocenter_name: "logo_UNA_blanco.png" 
 
 output:
   posterdown::posterdown_betterport:
     self_contained: true
+    geometry:
+      - a0paper
     pandoc_args: --mathjax
     number_sections: false
+    
 bibliography: packages.bib
 link-citations: true
-poster_heigt: "120cm"
+poster_height: "120cm"
 poster_width: "90cm"
 knit: pagedown::chrome_print
 font_family: 'Montserrat'
@@ -48,6 +53,10 @@ primary_colour: "#05ae85"
 secondary_colour: "#05ae85" 
 title_textsize: 40
 body_textsize: "40px"
+header-includes:
+  - \raggedbottom
+  - \setlength{\footskip}{0pt}    # elimina espacio de footer extra
+  - \setlength{\textheight}{1\paperheight}  # fuerza que el contenido no rompa página
 ---
 
 
@@ -59,16 +68,46 @@ body_textsize: "40px"
   transform: translate(-50%, -50%);
   width: 40%;   /* ajustá el tamaño del logo */
 }
+
+
+#main-img-right {
+  position: absolute;
+  right: 3%;
+  top: 15%;
+  width: 300px;         /* Tamaño fijo más seguro */
+  height: 300px;
+  object-fit: contain;
+}
 </style>
 
+
+
 ```{r, include=FALSE}
+
+## Paquetes
+
+library(qrcode)
+library(dplyr)
+library(rsvg)
+
+## Opciones
+
 knitr::opts_chunk$set(echo = FALSE,
                       warning = FALSE,
                       tidy = FALSE,
                       message = FALSE,
                       fig.align = 'center',
                       out.width = "100%")
+
 options(knitr.table.format = "html") 
+
+## Código QR
+
+qr_code("https://github.com/FedeGiovannetti/Poster_AACC_2025", ecl = "H") %>%
+  generate_svg("QR_Poster_AACC_2025.svg", foreground = "white", background = "transparent")
+
+rsvg_png("QR_Poster_AACC_2025.svg", "QR_Poster_AACC_2025.png", width = 1000, height = 1000)
+
 ```
 
 <span style="display: block; margin-top: -5px;">
@@ -104,6 +143,7 @@ Se seleccionó un número final de k=3 mediante K-medias y PAM. Los grupos difir
 
 ## References
 
+@* 
 
 ```{r figura_2_guardar, include=FALSE,  fig.width = 12, fig.height = 10}
 library(patchwork)
@@ -236,6 +276,7 @@ ggsave("Figura_2_poster.png", figura_2, width = 12, height = 6, units = "in")
   los/as participantes de las muestras A y B respectivamente.    
   </figcaption>
 </figure>
+
 
 
   
