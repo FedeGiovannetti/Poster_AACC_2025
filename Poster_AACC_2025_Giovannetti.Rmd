@@ -137,9 +137,9 @@ Los datos del desempeño fueron analizados mediante diversas técnicas de cluste
 
 Se seleccionó un número final de k=3 mediante K-medias y PAM. Los grupos difirieron significativamente entre sí en todas las tareas (p <.05), mostrando similitudes y diferencias para cada muestra. 
 
-- <span style="color:#F8766D; font-weight:bold;">Clúster 1</span> presentó desempeños y tiempos de reacción (TR) bajos en CI En ambas muestras. Para MT, mostró desempeños bajos en la muestra A y altos en la muestra B.<br>
-- <span style="color:#00BA38; font-weight:bold;">Clúster 2</span> presentó desempeños medios en CI y bajos en PL.<br>
-- <span style="color:#619CFF; font-weight:bold;">Clúster 3</span> tuvo desempeños medios-altos en CI y PL. En los TR de CI, presentó TR medios en la muestra A, y altos en la muestra B. <br>
+- <span style="color:#619CFF; font-weight:bold;">Clúster 1</span> presentó desempeños y tiempos de reacción (TR) bajos en CI En ambas muestras. Para MT, mostró desempeños bajos en la muestra A y altos en la muestra B.<br>
+- <span style="color:#00BA38; font-weight:bold;">Clúster 2</span> presentó desempeños medios en CI en ambas muestras, con RT altos en la muestra A, acompañados de desempeños bajos en PL.<br>
+- <span style="color:#F8766D; font-weight:bold;">Clúster 3</span> tuvo desempeños medios-altos en CI y PL en ambas muestras. En los TR de CI, presentó TR bajos en la muestra A, y altos en la muestra B. <br>
 
 ## References
 
@@ -149,21 +149,23 @@ Se seleccionó un número final de k=3 mediante K-medias y PAM. Los grupos difir
 library(patchwork)
 library(ggplot2)
 
-Plot_soldati <- readRDS("FiguraSoldati.Rds")+
-    geom_point(size = 8) +
-  geom_line(linewidth = 2, alpha = 0.4)      +
-  geom_errorbar(aes(ymin = Mean - SE,
-                    ymax = Mean + SE), 
-                    alpha = 0.8, size = 1)
-
-Plot_dominico <- readRDS("FiguraDominico.Rds")  +
+Plot_A <- readRDS("FiguraDominico.Rds")  +
   geom_point(size = 8) +
   geom_line(linewidth = 2, alpha = 0.4)+
   geom_errorbar(aes(ymin = Mean - SE,
                     ymax = Mean + SE), 
                     alpha = 0.8, size = 1)
 
-p <-   (Plot_soldati / Plot_dominico) +
+Plot_B <- readRDS("FiguraSoldati.Rds")+
+    geom_point(size = 8) +
+  geom_line(linewidth = 2, alpha = 0.4)      +
+  geom_errorbar(aes(ymin = Mean - SE,
+                    ymax = Mean + SE), 
+                    alpha = 0.8, size = 1)
+
+
+
+p <-   (Plot_A / Plot_B) +
 
   patchwork::plot_layout(
     guides = 'collect',
