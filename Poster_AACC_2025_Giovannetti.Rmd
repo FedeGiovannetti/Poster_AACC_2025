@@ -1,11 +1,11 @@
 ---
-main_topsize: 0.2 #percent coverage of the poster
-main_bottomsize: 0.1
+main_topsize: 0.12 #percent coverage of the poster
+main_bottomsize: 0.08
 #ESSENTIALS
-# title: 'Implementación de métodos de clusterización para la identificación de diversidad cognitiva en dos muestras de niños y niñas provenientes del Área Metropolitana de Buenos Aires.'
+title: 'Implementación de métodos de clusterización para la identificación de diversidad cognitiva en dos muestras de niños y niñas provenientes del Área Metropolitana de Buenos Aires.'
 author:
   - name: '**Giovannetti, Federico**'
-    affil: a, b 
+    affil: a, b
     # main: true
     email: giovannettipsi@gmail.com
   - name: Pietto, Marcos Luis
@@ -19,16 +19,31 @@ author:
 affiliation:
   - num: a
     address: Unidad de Neurobiología Aplicada (UNA, CEMIC-CONICET)
-  - num: b    
+  - num: b
     address: Instituto de Cálculo (IC, FCEyN- CONICET)
   - num: c
     address:  Universidad Argentina de la Empresa (UADE)
   - num: d
     address:  Laboratorio de Inteligencia Artificial Aplicada (LIAA, FCEyN- CONICET)
+    
 main_findings:
-  # - "Make **better posters** with RMarkdown + **posterdown**."
-  - "Implementación de métodos de **clusterización** para la identificación de **diversidad cognitiva** en dos muestras de **niños y niñas** provenientes del Área Metropolitana de Buenos Aires."
+  - "**Métodos de clusterización para identificar<br>diversidad cognitiva en niños y niñas**"
+  # - "<div style='text-align:center; width:80%; margin:0 200px 0 0;'>Métodos de **clusterización** para identificar **diversidad cognitiva** en **niños y niñas**</div>"
+  # - "<div style='text-align:center; width:80%; margin: 0 auto;'>Métodos de **clusterización** para identificar **diversidad cognitiva** en **niños y niñas**</div>"
+  # <!-- | -->
+  # Implementación de métodos de **clusterización** para la identificación de **diversidad cognitiva** en dos muestras de **niños y niñas** provenientes del Área Metropolitana de Buenos Aires.<br>
+  # <span style="font-size:40px; font-weight:normal; color:#FFFFFF; display:block; margin-top:23px; line-height:1.1;">
+  # Giovannetti, Federico<sup>a,b</sup>; Pietto, Marcos Luis<sup>a,c</sup>; Lipina, Sebastián Javier<sup>a</sup>;
+  # Kamienkowski, Juan Esteban<sup>d</sup>; Segretin, María Soledad<sup>a</sup>
+  # </span>
+  # <span style="font-size:30px; font-weight:normal; display:block; color:#FFFFFF; padding-top:20px; padding-bottom:0;">
+  # <sup>a</sup> Unidad de Neurobiología Aplicada (UNA, CEMIC-CONICET)<br>
+  # <sup>b</sup> Instituto de Cálculo (IC, FCEyN-CONICET)<br>
+  # <sup>c</sup> Universidad Argentina de la Empresa (UADE)<br>
+  # <sup>d</sup> Laboratorio de Inteligencia Artificial Aplicada (LIAA, FCEyN-CONICET)
+  # </span>
 main_fontfamily: 'Montserrat'
+main_textsize: "150px"
 logoleft_name: "Logos_UNA_CEMIC.png"
 
 logoright_name: "QR_Poster_AACC_2025.png"
@@ -51,12 +66,14 @@ knit: pagedown::chrome_print
 font_family: 'Montserrat'
 primary_colour: "#05ae85"
 secondary_colour: "#05ae85" 
-title_textsize: 40
+title_textsize: "70px"
 body_textsize: "40px"
-header-includes:
-  - \raggedbottom
-  - \setlength{\footskip}{0pt}    # elimina espacio de footer extra
-  - \setlength{\textheight}{1\paperheight}  # fuerza que el contenido no rompa página
+author_textsize: "60px"
+authorextra_textsize: "50px"
+affiliation_textsize: "40px"
+reference_textsize: "25px"
+accent_colour: '#00000090'
+main_textcol: "#FFFFFF"
 ---
 
 
@@ -64,19 +81,23 @@ header-includes:
 #main-img-left {
   position: absolute;
   top: 50%;
-  left: 25%;
+  left: 23%;
   transform: translate(-50%, -50%);
   width: 40%;   /* ajustá el tamaño del logo */
+  object-fit: contain;
+  overflow: hidden;   /* que no se salga */
+  max-height: 50%;   /* asegurás que no “empuje” */
 }
-
 
 #main-img-right {
   position: absolute;
   right: 3%;
-  top: 15%;
-  width: 300px;         /* Tamaño fijo más seguro */
-  height: 300px;
+  top: 20%;
+  width: 220px;
+  height: 220px;
   object-fit: contain;
+  overflow: hidden;   /* que no se salga */
+  max-height: 90%;   /* asegurás que no “empuje” */
 }
 </style>
 
@@ -103,10 +124,10 @@ options(knitr.table.format = "html")
 
 ## Código QR
 
-qr_code("https://github.com/FedeGiovannetti/Poster_AACC_2025", ecl = "H") %>%
-  generate_svg("QR_Poster_AACC_2025.svg", foreground = "white", background = "transparent")
-
-rsvg_png("QR_Poster_AACC_2025.svg", "QR_Poster_AACC_2025.png", width = 1000, height = 1000)
+# qr_code("https://github.com/FedeGiovannetti/Poster_AACC_2025", ecl = "H") %>%
+#   generate_svg("QR_Poster_AACC_2025.svg", foreground = "white", background = "transparent")
+# 
+# rsvg_png("QR_Poster_AACC_2025.svg", "QR_Poster_AACC_2025.png", width = 1000, height = 1000)
 
 ```
 
@@ -114,36 +135,60 @@ rsvg_png("QR_Poster_AACC_2025.svg", "QR_Poster_AACC_2025.png", width = 1000, hei
 
 ## Antecedentes
 
-Las ciencias del desarrollo muestran una creciente comprensión de que las diferencias individuales en el desarrollo cognitivo no necesariamente deberían verse como desempeños atípicos, sino como posibles adaptaciones al contexto. En este marco, los análisis de clústeres resultan herramientas valiosas para identificar estructuras latentes y perfiles de desempeño diversos. Sin embargo, no existen estudios que integren resultados de muestras con distintos protocolos de evaluación y composición demográfica, limitando el aporte de estas metodologías al diseño de intervenciones.
+<span style="font-size:30px; font-weight:normal;">
+Las ciencias del desarrollo reconocen que las diferencias individuales en el desarrollo cognitivo pueden ser adaptaciones al contexto y no necesariamente desempeños atípicos. Los análisis de clústeres ayudan a identificar perfiles diversos, pero faltan estudios que integren datos de distintas evaluaciones y poblaciones, lo que limita su uso en el diseño de intervenciones.
+</span>
 
 ```{r, include=FALSE}
-knitr::write_bib(c('posterdown', 'rmarkdown','pagedown'), 'packages.bib')
+knitr::write_bib(c('posterdown', 'rmarkdown','pagedown','dplyr','ggplot2','base','diceR'), 'packages.bib')
+
+cat(
+"
+@Manual{RStudio,
+  title = {RStudio: Integrated Development Environment for R},
+  author = {{RStudio Team}},
+  organization = {RStudio, PBC},
+  address = {Boston, MA},
+  year = {2024},
+  url = {http://www.rstudio.com/},
+}",
+file = "packages.bib",
+append = TRUE
+)
 ```
 
 ## Objetivos
 
-A. Analizar la diversidad de perfiles de desempeño en tareas con demandas ejecutivas en niños y niñas de edad preescolar y de bajo nivel socioeconómico del Área Metropolitana de Buenos Aires
+<span style="font-size:35px; font-weight:bold;">
+A. Analizar la diversidad de perfiles de desempeño en tareas con demandas ejecutivas en niños y niñas de edad preescolar y de bajo nivel socioeconómico del Área Metropolitana de Buenos Aires.
 
-B. Comparar la implementación de técnicas de clusterización en dos muestras con diferente composición demográfica
+<span style="font-size:35px; font-weight:bold;">
+B. Comparar la implementación de técnicas de clusterización en dos muestras con diferente composición demográfica.
+</span>
 
 ## Métodos
 
+<span style="font-size:30px; font-weight:normal;">
 Se analizaron dos muestras de proyectos desarrollados en la UNA: la muestra A estuvo compuesta por 58 participantes (Medad=5.82; DS=0.28), y la muestra B por 106 participantes (Medad=5.34; DS=0.33). Para ambas muestras, se evaluaron procesos de control inhibitorio (CI), memoria de trabajo (MT) y planificación (PL). 
+</span>
 
-Los datos del desempeño fueron analizados mediante diversas técnicas de clusterización, iterando en distinta cantidad de clústeres (k) para cada muestra. Posteriormente se analizaron y compararon las soluciones obtenidas para cada muestra.
+<span style="font-size:30px; font-weight:normal;">
+Los datos del desempeño fueron analizados mediante distitnos métodos de clusterización (k-means, PAM, Diana y jerarquicos) y distancias (euclideana y manhattan), iterando en distinta cantidad de clústeres (k) para cada muestra. Posteriormente se analizaron y compararon las soluciones obtenidas para cada muestra.
+</span>
+
+<span style="font-size:30px; font-weight:normal;">
+Todos los análisis se realizaron mediante el lenguaje R versión 4.4.2 [@R-base], en Rstudio [@R-studio]. Los principales paquetes utilizados fueron dplyr [@R-dplyr], ggplot2 [@R-ggplot2] y diceR [@R-diceR] .
+</span>
 
 
 ## Resultados
 
 Se seleccionó un número final de k=3 mediante K-medias y PAM. Los grupos difirieron significativamente entre sí en todas las tareas (p <.05), mostrando similitudes y diferencias para cada muestra. 
 
-- <span style="color:#619CFF; font-weight:bold;">Clúster 1</span> presentó desempeños y tiempos de reacción (TR) bajos en CI En ambas muestras. Para MT, mostró desempeños bajos en la muestra A y altos en la muestra B.<br>
+- <span style="color:#619CFF; font-weight:bold;">Clúster 1</span> presentó desempeños y tiempos de reacción (TR) bajos en CI en ambas muestras. Para MT, mostró desempeños bajos en la muestra A y altos en la muestra B.<br>
 - <span style="color:#00BA38; font-weight:bold;">Clúster 2</span> presentó desempeños medios en CI en ambas muestras, con RT altos en la muestra A, acompañados de desempeños bajos en PL.<br>
 - <span style="color:#F8766D; font-weight:bold;">Clúster 3</span> tuvo desempeños medios-altos en CI y PL en ambas muestras. En los TR de CI, presentó TR bajos en la muestra A, y altos en la muestra B. <br>
 
-## References
-
-@* 
 
 ```{r figura_2_guardar, include=FALSE,  fig.width = 12, fig.height = 10}
 library(patchwork)
@@ -197,13 +242,11 @@ p
 
 ```
 
-
 <figure style="width:200%; margin:0 auto; text-align:center;">
   <img src="Figura_1_poster.png" alt="Figura_1" style="width:100%;">
   <figcaption>
   <span style="font-weight:bold;">Figura 1.</span> 
-  Comparación los desempeños y tiempos de reacción<br>
-  de los clústeres generados para cada muestra (valores z)
+  Comparación los desempeños y tiempos de reacción de los clústeres<br>generados para cada muestra (valores z).* p<0.05; ** p<0.01; *** p<0.001.
   </figcaption>
 </figure>
 
@@ -279,6 +322,20 @@ ggsave("Figura_2_poster.png", figura_2, width = 12, height = 6, units = "in")
   </figcaption>
 </figure>
 
+<div style="height:50px;"></div>
+
+## Conclusiones
+
+Los métodos de agrupamiento permitieron identificar perfiles heterogéneos entre y dentro de las muestras. Estos resultados contribuyen al desarrollo de un enfoque metodológico relevante en el contexto de intervenciones que contemplen la diversidad cognitiva infantil.
+
+
+<div style="height:3210px;"></div>
+
+### Referencias
+<span style="display: block; margin-top: -3px;">
+
+::: {#refs}
+:::
 
 
   
