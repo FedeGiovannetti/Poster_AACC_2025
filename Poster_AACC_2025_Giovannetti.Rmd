@@ -27,7 +27,8 @@ affiliation:
     address:  Laboratorio de Inteligencia Artificial Aplicada (LIAA, FCEyN- CONICET)
     
 main_findings:
-  - "**Métodos de clusterización para identificar<br>diversidad cognitiva en niños y niñas**"
+  # - "**Métodos de clusterización para identificar<br>diversidad cognitiva en niños y niñas**"
+  - "**La clusterización identifica perfiles<br>cognitivos que amplían la comprensión<br>de la diversidad infantil**"
   # - "<div style='text-align:center; width:80%; margin:0 200px 0 0;'>Métodos de **clusterización** para identificar **diversidad cognitiva** en **niños y niñas**</div>"
   # - "<div style='text-align:center; width:80%; margin: 0 auto;'>Métodos de **clusterización** para identificar **diversidad cognitiva** en **niños y niñas**</div>"
   # <!-- | -->
@@ -59,6 +60,7 @@ output:
     number_sections: false
     
 bibliography: packages.bib
+csl: apa.csl
 link-citations: true
 poster_height: "120cm"
 poster_width: "90cm"
@@ -173,11 +175,11 @@ Se analizaron dos muestras de proyectos desarrollados en la UNA: la muestra A es
 </span>
 
 <span style="font-size:30px; font-weight:normal;">
-Los datos del desempeño fueron analizados mediante distitnos métodos de clusterización (k-means, PAM, Diana y jerarquicos) y distancias (euclideana y manhattan), iterando en distinta cantidad de clústeres (k) para cada muestra. Posteriormente se analizaron y compararon las soluciones obtenidas para cada muestra.
+Los datos del desempeño fueron analizados mediante distitnos métodos de clusterización (k-means, PAM, Diana y jerárquicos) y distancias (euclideana y manhattan), iterando en distinta cantidad de clústeres (k) para cada muestra. Posteriormente se analizaron y compararon las soluciones obtenidas para cada muestra.
 </span>
 
 <span style="font-size:30px; font-weight:normal;">
-Todos los análisis se realizaron mediante el lenguaje R versión 4.4.2 [@R-base], en Rstudio [@R-studio]. Los principales paquetes utilizados fueron dplyr [@R-dplyr], ggplot2 [@R-ggplot2] y diceR [@R-diceR] .
+Todos los análisis se realizaron mediante el lenguaje R versión 4.4.2 [@R-base], en Rstudio [@RStudio]. Los principales paquetes utilizados fueron dplyr [@R-dplyr], ggplot2 [@R-ggplot2] y diceR [@R-diceR] .
 </span>
 
 
@@ -326,10 +328,11 @@ ggsave("Figura_2_poster.png", figura_2, width = 12, height = 6, units = "in")
 
 ## Conclusiones
 
-Los métodos de agrupamiento permitieron identificar perfiles heterogéneos entre y dentro de las muestras. Estos resultados contribuyen al desarrollo de un enfoque metodológico relevante en el contexto de intervenciones que contemplen la diversidad cognitiva infantil.
+- Los métodos de agrupamiento permitieron identificar perfiles heterogéneos entre y dentro de las muestras. 
+- Estos resultados contribuyen al desarrollo de un enfoque metodológico relevante en el contexto de intervenciones que contemplen la diversidad cognitiva infantil.
 
 
-<div style="height:3210px;"></div>
+<div style="height:3150px;"></div>
 
 ### Referencias
 <span style="display: block; margin-top: -3px;">
