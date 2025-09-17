@@ -1,0 +1,330 @@
+---
+title: "Main Analyses Soldati"
+subtitle: "Clustering implementation and groups comparisons"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+toc: true
+date: "`r Sys.time()`"
+css: style.css
+---
+
+## 0. Packages, functions and data
+
+```{r, message= F}
+
+rm(list = ls())
+unlink("Tables/*")
+unlink("Figures/*")
+
+# set.seed(123)
+library(tidyverse)
+library(diceR)
+library(flextable)
+# library(tools)
+library(ggpubr)
+source("helper/helper_tables.R")
+source("helper/helper_functons.R")
+
+
+datos = read.csv("../datos_normalizados_soldati.csv")
+datos.reducidos = read.csv("../datos_reducidos.csv") %>% 
+  filter(PROYECTO == "Soldati") %>% 
+  select(-PROYECTO)
+
+```
+
+```{r}
+
+Soldati <- read.csv("../data/Bases PICT 2014 (Villa Soldati)/PICT_2014_PRE_filtered.csv")%>% 
+  filter(subject %in% datos.reducidos$subject) %>% 
+  select(subject, SEXO, EDAD, TOTINDICNBI,PJENES) 
+
+
+Soldati %>% 
+    summarise(n = as.character(n()),
+              girls = as.character(sum(SEXO == "fem", na.rm = TRUE)),
+              Age = paste(round(mean(EDAD, na.rm = TRUE),digits = 2),
+                          " (",
+                          round(
+                            sd(
+                              EDAD,
+                              na.rm = TRUE),
+                            digits = 3),
+                          ")", sep = "")
+              ) %>% 
+    pivot_longer(everything()) %>%
+    flextable() %>% 
+    # custom_flextable("")%>%
+    set_header_labels(name = "Sample information", value = "") %>%  # Remove column names
+ 
+    autofit() 
+
+
+```
+
+
+# 1. Ensemble model
+
+
+```{r ensemble model, message= F}
+
+
+Ensemble_model = dice(datos,
+                nk = 3, # 2-5 clusters
+                reps = 100, # 100 repetitions for each algorithm
+                p.item = 0.8, # % of subsamples in each repetition
+                algorithms = c(
+                  "km",
+                 "pam"
+                 ), # 3 clustering algorithms
+                cons.funs = "LCE", # consensus function
+                distance = c("euclidean"#, 
+                             # "manhattan"
+                             ),
+                seed.data= 999 # set random seed                ,
+                # seed = 999  # Force sequential processing
+                
+  )
+
+datos$Clusters_desordenados = paste("Cluster desordenado",Ensemble_model$clusters)
+
+tabla_clusters_ordenados = datos %>% 
+  pivot_longer(cols = -Clusters_desordenados, names_to = "Variables", values_to = "Valores") %>% 
+  
+  group_by(Clusters_desordenados, Variables) %>% 
+  summarise(medias = mean(Valores)) %>% 
+  mutate(menores_a_cero = ifelse(medias < 0, 1, 0),
+         mayores_a_cero = ifelse(medias > 0, 1, 0)) %>% 
+  group_by(Clusters_desordenados) %>% 
+  summarise(medias = mean(medias),
+            suma_menos_cero = sum(menores_a_cero),
+            suma_mas_cero = sum(mayores_a_cero)) %>% 
+  arrange(desc(suma_menos_cero), desc(medias)) %>% 
+  ungroup() %>% 
+  mutate(Clusters = c("Cluster 1","Cluster 2", "Cluster 3")) %>% 
+  select(Clusters_desordenados, Clusters)
+
+datos = datos %>% 
+  left_join(tabla_clusters_ordenados) %>% 
+  select(-Clusters_desordenados)
+  
+  
+
+
+datos.reducidos$Clusters_desordenados = paste("Cluster desordenado",Ensemble_model$clusters)
+
+datos.reducidos = datos.reducidos %>% 
+  left_join(tabla_clusters_ordenados) %>% 
+  select(-Clusters_desordenados)
+
+datos_clusters = datos.reducidos %>% 
+  select(subject, Clusters)
+
+table(datos_clusters$Clusters) %>% 
+  as.data.frame() %>% 
+  rename(Clusters = "Var1") %>% 
+  flextable()
+
+```
+
+# 2. Cluster comparisons
+
+## 2.1.Table 1. Descriptive and inferential analyses for clustering result
+
+```{r}
+
+# Transform to long format
+
+datos.long.z = datos %>%
+  pivot_longer(!Clusters,names_to = "Feature") %>% 
+  mutate(Tipo = ifelse(grepl("rt", Feature), "RT", "Desempeño")) %>% 
+  feature_rename() %>% 
+  arrange(factor(Feature, levels = feature_order)) 
+
+
+datos.long = datos.reducidos %>%
+  select(-subject) %>% 
+  pivot_longer(!Clusters,names_to = "Feature") %>% 
+  mutate(Tipo = ifelse(grepl("rt", Feature), "RT", "Desempeño")) %>% 
+  feature_rename() %>% 
+  arrange(factor(Feature, levels = feature_order)) 
+
+
+# Mean and SE values
+
+datos.summarised.z = datos.long.z %>%
+  group_by(Tipo, Feature, Clusters) %>% 
+  summarise(Mean = mean(value),
+            # SD = sd(value),
+            SE = sqrt(sum((value-mean(value))^2/(length(value)-1)))/sqrt(length(value))) %>% 
+  ungroup()
+
+datos.summarised = datos.long %>%
+  group_by(Tipo, Feature, Clusters) %>% 
+  summarise(Mean = mean(value),
+            # SD = sd(value),
+            SE = sqrt(sum((value-mean(value))^2/(length(value)-1)))/sqrt(length(value))
+            ) %>% 
+  ungroup()
+
+# Inferential analysis
+
+datos.kruskal.z = datos.long.z %>%
+  group_by(Feature) %>% 
+  nest() %>% 
+  mutate(modelos = map(data ,~kruskal.test(value ~ Clusters, data = .)),
+         summary = map(modelos, broom::tidy),) %>% 
+  unnest(summary) %>% 
+  mutate(Significance = case_when(
+    p.value < .001 ~ "***",
+    p.value >= .001 & p.value < .01  ~ "**",
+    p.value >= .01 & p.value < .05 ~ "*",
+    p.value >= .05 ~ ""
+  )) %>% 
+  select(-data,-modelos, -parameter, -method) 
+
+
+
+# Plot data
+
+datos.plot = datos.summarised.z %>% 
+  left_join(datos.kruskal.z, by = c("Feature")) %>% 
+  arrange(factor(Feature, levels = feature_order)) 
+
+# Formatted table
+  
+
+# Tidyverse pipeline
+(Table1 <- datos.summarised %>%
+  left_join(datos.kruskal.z, by = c("Feature")) %>% 
+  arrange(factor(Feature, levels = feature_order)) %>% 
+  mutate(Task = gsub("_.*", "", Feature)) %>%  # Extract task name
+  select(-"Tipo", -"Significance") %>%
+  select(Task, everything()) %>%
+  rename(Statistic = "statistic") %>% 
+
+  mutate(Feature =str_remove(Feature, "^[A-Z]+_")) %>%
+
+  custom_flextable("Table 1. Descriptive and inferential analyses for clustering result") %>% 
+  merge_v(j = "Feature", target = c("Statistic","p.value")) %>%
+  merge_v(j = 1:2) %>%
+   # merge_v(j = c("Feature", "p.value")) %>%
+  valign(valign = "top") 
+  )
+
+
+
+# save_table(Table1, "Tables/Table_1.docx")
+
+
+```
+
+
+## 2.2.Table S1. Pairwise comparisons for clustering result.
+
+```{r}
+
+
+  
+datos.long.z %>%
+  group_by(Feature) %>%
+  nest() %>%
+  mutate(
+    modelos = map(data, ~ pairwise.wilcox.test(.x$value, .x$Clusters, p.adjust.method = "holm")),
+    summary = map(modelos, broom::tidy),
+    pairw_table = map(
+      summary, ~ .x %>%
+        mutate(contrasts = paste(group2, "vs.", group1)) %>%
+        select(contrasts, p.value) %>%
+        pivot_wider(names_from = contrasts, values_from = p.value)
+      )
+    ) %>%
+  select(Feature, pairw_table) %>%
+  mutate(Task = gsub("_.*", "", Feature)) %>%  # Extract task name
+    select(Task, everything()) %>%
+
+  mutate(Feature =str_remove(Feature, "^[A-Z]+_")) %>%
+  unnest(pairw_table) %>% 
+  custom_flextable("Pairwise comparisons for clustering result") %>% 
+  bold(j = 3,~ `Cluster 1 vs. Cluster 2` < .05) %>% 
+  bold(j = 4,~ `Cluster 1 vs. Cluster 3` < .05)%>% 
+  bold(j = 5,~ `Cluster 2 vs. Cluster 3` < .05) %>% 
+  mk_par(j = 3,i = ~`Cluster 1 vs. Cluster 2` < .001, value = as_paragraph("<.001")) %>%
+  mk_par(j = 4,i = ~`Cluster 1 vs. Cluster 3` < .001, value = as_paragraph("<.001")) %>%
+  mk_par(j = 5,i = ~`Cluster 2 vs. Cluster 3` < .001, value = as_paragraph("<.001")) %>%
+  merge_v(j = 1:2) %>% 
+  valign(valign = "top")
+
+
+
+
+```
+
+
+
+
+## 2.3.Figure 1. Feature comparisons between subjects
+
+
+```{r, fig.width= 10, fig.height=4}
+
+plot.caracteristicas = function(df){
+  
+  df %>% 
+    ggplot(aes(x = Feature, 
+               y = Mean, 
+               color = factor(Clusters),
+               group = factor(Clusters),
+               label = Significance))+
+      geom_hline(yintercept =  0, linetype = "dashed", alpha = 0.6)+
+      geom_point(size = 4) +
+      geom_line(linewidth = 1.5, alpha = 0.5)+
+      geom_errorbar(aes(ymin = Mean - SE,
+                        ymax = Mean + SE), 
+                    alpha = 0.8)+
+      geom_text(aes(y = 1.5), color = "black")+
+        scale_color_discrete(direction = -1) +
+
+      coord_flip(ylim = c(-3,3))+
+      theme_minimal(base_size = 20) +
+        labs(colour = "Clusters")+
+      ylab("Media") + 
+        theme(
+          # legend.position = c(0.5, 0.5),  # Position legend at bottom-left
+          # legend.justification = c(0.7, 0),  # Align legend to bottom-left
+          axis.title.y = element_blank()  # Remove y-axis title
+        )
+}
+
+
+plot.des = datos.plot %>% 
+  # filter(Tipo == "Desempeño") %>%
+  mutate(Feature = factor(Feature, levels =  c("STROOP Desempeño ensayos congruentes",
+                                               "STROOP Desempeño ensayos incongruentes",
+                                               "STROOP TR ensayos congruentes",
+                                               "STROOP TR ensayos incongruentes",
+                                               "CORSI Desempeño",
+                                               "TOL Desempeño"
+                                               )
+                          )
+         )%>%
+  plot.caracteristicas()
+
+
+
+plot.des
+
+saveRDS(object = plot.des, file = "Figuras/FiguraSoldati.Rds")
+
+
+# 
+# Figure1%>%
+#   ggexport(filename = "Figures/Figure1.png", width = 720, height = 720)
+
+
+```
+
+

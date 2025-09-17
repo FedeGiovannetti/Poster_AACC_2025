@@ -25,32 +25,13 @@ affiliation:
     address:  Universidad Argentina de la Empresa (UADE)
   - num: d
     address:  Laboratorio de Inteligencia Artificial Aplicada (LIAA, FCEyN- CONICET)
-    
 main_findings:
-  # - "**Métodos de clusterización para identificar<br>diversidad cognitiva en niños y niñas**"
   - "**La clusterización identifica perfiles<br>cognitivos que amplían la comprensión<br>de la diversidad infantil**"
-  # - "<div style='text-align:center; width:80%; margin:0 200px 0 0;'>Métodos de **clusterización** para identificar **diversidad cognitiva** en **niños y niñas**</div>"
-  # - "<div style='text-align:center; width:80%; margin: 0 auto;'>Métodos de **clusterización** para identificar **diversidad cognitiva** en **niños y niñas**</div>"
-  # <!-- | -->
-  # Implementación de métodos de **clusterización** para la identificación de **diversidad cognitiva** en dos muestras de **niños y niñas** provenientes del Área Metropolitana de Buenos Aires.<br>
-  # <span style="font-size:40px; font-weight:normal; color:#FFFFFF; display:block; margin-top:23px; line-height:1.1;">
-  # Giovannetti, Federico<sup>a,b</sup>; Pietto, Marcos Luis<sup>a,c</sup>; Lipina, Sebastián Javier<sup>a</sup>;
-  # Kamienkowski, Juan Esteban<sup>d</sup>; Segretin, María Soledad<sup>a</sup>
-  # </span>
-  # <span style="font-size:30px; font-weight:normal; display:block; color:#FFFFFF; padding-top:20px; padding-bottom:0;">
-  # <sup>a</sup> Unidad de Neurobiología Aplicada (UNA, CEMIC-CONICET)<br>
-  # <sup>b</sup> Instituto de Cálculo (IC, FCEyN-CONICET)<br>
-  # <sup>c</sup> Universidad Argentina de la Empresa (UADE)<br>
-  # <sup>d</sup> Laboratorio de Inteligencia Artificial Aplicada (LIAA, FCEyN-CONICET)
-  # </span>
 main_fontfamily: 'Montserrat'
 main_textsize: "150px"
-logoleft_name: "Logos_UNA_CEMIC.png"
+logoleft_name: "img/Logos_UNA_CEMIC.png"
 
-logoright_name: "QR_Poster_AACC_2025.png"
-# logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
-# logocenter_name: "logo_UNA_blanco.png" 
-
+logoright_name: "img/QR_Poster_AACC_2025.png"
 output:
   posterdown::posterdown_betterport:
     self_contained: true
@@ -196,14 +177,15 @@ Se seleccionó un número final de k=3 mediante K-medias y PAM. Los grupos difir
 library(patchwork)
 library(ggplot2)
 
-Plot_A <- readRDS("FiguraDominico.Rds")  +
+
+Plot_A <- readRDS("Figuras/FiguraDominico.Rds")  +
   geom_point(size = 8) +
   geom_line(linewidth = 2, alpha = 0.4)+
   geom_errorbar(aes(ymin = Mean - SE,
                     ymax = Mean + SE), 
                     alpha = 0.8, size = 1)
 
-Plot_B <- readRDS("FiguraSoldati.Rds")+
+Plot_B <- readRDS("Figuras/FiguraSoldati.Rds")+
     geom_point(size = 8) +
   geom_line(linewidth = 2, alpha = 0.4)      +
   geom_errorbar(aes(ymin = Mean - SE,
@@ -236,7 +218,9 @@ p <-   (Plot_A / Plot_B) +
     )
 
 
-ggsave("Figura_1_poster.png", p, width = 12, height = 10, units = "in")
+
+ggsave("Figuras/Figura_1_poster.png", p, width = 12, height = 10, units = "in")
+
 
 p
 
@@ -245,7 +229,7 @@ p
 ```
 
 <figure style="width:200%; margin:0 auto; text-align:center;">
-  <img src="Figura_1_poster.png" alt="Figura_1" style="width:100%;">
+  <img src="Figuras/Figura_1_poster.png" alt="Figura_1" style="width:100%;">
   <figcaption>
   <span style="font-weight:bold;">Figura 1.</span> 
   Comparación los desempeños y tiempos de reacción de los clústeres<br>generados para cada muestra (valores z).* p<0.05; ** p<0.01; *** p<0.001.
@@ -289,14 +273,14 @@ recorte_imagen <- function(imagen){
 
 
 grob_con_texto_A <- grobTree(
-  rasterGrob(recorte_imagen("Imagen_Muestra_A_cuadrada.jpg"), vp = vp_A),
+  rasterGrob(recorte_imagen("img/Imagen_Muestra_A_cuadrada.jpg"), vp = vp_A),
   textGrob("A", x = 0.05, y = 0.95, just = c("left", "top"),
            gp = gpar(col = "black", fontsize = 30, fontface = "bold"))
 )
 
 
 grob_con_texto_B <- grobTree(
-  rasterGrob(recorte_imagen("Imagen_Muestra_B_cuadrada.jpg"), vp = vp_B),
+  rasterGrob(recorte_imagen("img/Imagen_Muestra_B_cuadrada.jpg"), vp = vp_B),
   textGrob("B", x = 0.05, y = 0.95, just = c("left", "top"),
            gp = gpar(col = "black", fontsize = 30, fontface = "bold"))
 )
@@ -311,12 +295,12 @@ figura_2 <- arrangeGrob(
 
 
 
-ggsave("Figura_2_poster.png", figura_2, width = 12, height = 6, units = "in")
+ggsave("Figuras/Figura_2_poster.png", figura_2, width = 12, height = 6, units = "in")
 
 ```
 
 <figure style="width:200%; margin:0 auto; text-align:center;">
-  <img src="Figura_2_poster.png" alt="Figura_2" style="width:100%;">
+  <img src="Figuras/Figura_2_poster.png" alt="Figura_2" style="width:100%;">
   <figcaption>
   <span style="font-weight:bold;">Figura 2.</span> 
   Imágenes de las inmediaciones del barrio donde habitaban    <br>
