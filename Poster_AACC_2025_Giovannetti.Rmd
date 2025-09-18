@@ -29,7 +29,7 @@ main_findings:
   - "**La clusterización identifica perfiles<br>cognitivos que amplían la comprensión<br>de la diversidad infantil**"
 main_fontfamily: 'Montserrat'
 main_textsize: "150px"
-logoleft_name: "img/Logos_UNA_CEMIC.png"
+logoleft_name: "img/Logos_UNA_CEMIC_IC_2.png"
 
 logoright_name: "img/QR_Poster_AACC_2025.png"
 output:
@@ -178,14 +178,14 @@ library(patchwork)
 library(ggplot2)
 
 
-Plot_A <- readRDS("Figuras/FiguraDominico.Rds")  +
+Plot_A <- readRDS("Figuras/FiguraMuestraA.Rds")  +
   geom_point(size = 8) +
   geom_line(linewidth = 2, alpha = 0.4)+
   geom_errorbar(aes(ymin = Mean - SE,
                     ymax = Mean + SE), 
                     alpha = 0.8, size = 1)
 
-Plot_B <- readRDS("Figuras/FiguraSoldati.Rds")+
+Plot_B <- readRDS("Figuras/FiguraMuestraB.Rds")+
     geom_point(size = 8) +
   geom_line(linewidth = 2, alpha = 0.4)      +
   geom_errorbar(aes(ymin = Mean - SE,
