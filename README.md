@@ -12,6 +12,7 @@ Poster presentado en la XX Reunión Nacional y IX Encuentro Internacional de la 
 Facultad de Psicología de la Universidad Nacional de Córdoba, Ciudad de Córdoba, Argentina.
 
 Accedé al poster [acá](https://github.com/FedeGiovannetti/Poster_AACC_2025/blob/main/Poster_AACC_2025_Giovannetti.pdf)
+
 ENGLISH: An AI-powered translation of the poster content may be found [here](https://github.com/FedeGiovannetti/Poster_AACC_2025/blob/main/Poster_AACC_2025_Giovannetti_English.pdf)
 
 ## Resumen
