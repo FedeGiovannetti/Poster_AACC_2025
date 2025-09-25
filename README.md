@@ -12,6 +12,7 @@ Poster presentado en la XX Reunión Nacional y IX Encuentro Internacional de la 
 Facultad de Psicología de la Universidad Nacional de Córdoba, Ciudad de Córdoba, Argentina.
 
 Accedé al poster [acá](https://github.com/FedeGiovannetti/Poster_AACC_2025/blob/main/Poster_AACC_2025_Giovannetti.pdf)
+ENGLISH: An AI-powered translation of the poster content may be found [here](https://github.com/FedeGiovannetti/Poster_AACC_2025/blob/main/Poster_AACC_2025_Giovannetti_English.pdf)
 
 ## Resumen
 **Antecedentes.** Las ciencias del desarrollo muestran una creciente comprensión de que las diferencias individuales en el desarrollo cognitivo no necesariamente deberían verse como desempeños atípicos, sino como posibles adaptaciones al contexto. En este marco, los análisis de
